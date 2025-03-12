@@ -15,5 +15,5 @@
     object_round: boolean;
     number_of_rounds?: number;
     hour_rate?: number;
-    body_guard_specialization: string;
+    body_guard_specialization: number;
  }

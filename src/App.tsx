@@ -1,12 +1,11 @@
 import './App.css';
 import ObjectsTable from './components/tables/objectsTable';
+import ObjectsScreen from './screens/objectsScreen';
 
 function App() {
   return (
-    <div className="app">
-      <div className='objectsTable'>
-        <ObjectsTable />
-        </div>
+    <div>
+        <ObjectsScreen />
     </div>
   );
 }
