@@ -2,10 +2,10 @@
 const EditGuardButton = () => {
     return(
         <button
-  className="rounded-lg relative w-56 h-8 cursor-pointer flex items-center border border-blue-500 bg-blue-500 group hover:bg-blue-500 active:bg-blue-500 active:border-greblueen-500"
+  className="rounded-lg relative w-48 h-8 cursor-pointer flex items-center border border-blue-500 bg-blue-500 group hover:bg-blue-500 active:bg-blue-500 active:border-greblueen-500"
 >
   <span
-    className="text-[#ffffff] font-semibold ml-8 transform group-hover:translate-x-20 transition-all duration-200"
+    className="text-[#ffffff] font-semibold ml-3 transform group-hover:translate-x-20 transition-all duration-200"
     >Zmień Ochroniarza</span>
   <span
     className="absolute right-0 h-full w-10 rounded-lg bg-blue-500 flex items-center justify-center transform group-hover:translate-x-0 group-hover:w-full transition-all duration-300">

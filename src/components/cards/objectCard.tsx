@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Objects } from "../../interface/objectsInterface";
 import AddGuardButton from "../buttons/addGuardButton";
-import EditGuardButton from "../buttons/editGuardButton";
 import GuardChoiceModal from "../modals/guardChoiceModal";
+import { Duties } from "../../interface/dutiesInterface";
+import SelectGuardsData from "../../queries/guards/Select_guards";
+import EditGuardButton from "../buttons/editGuardButton";
 
 interface ObjectCardProps {
   object: Objects | null;
 }
 
 const ObjectCard: React.FC<ObjectCardProps> = ({ object }) => {
+  const [isModalShown, setIsModalShown] = useState<boolean>(false);
+  const [dutiesData, setDuties] = useState<Duties[]>([]);
+  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
-    const [isModalShown, setIsModalShown] = useState<boolean>(false);
+  useEffect(() => {
+    const fetchDuties = async () => {
+      try {
+        const dutiesRes = await SelectGuardsData.Select_duties(object?.id);
+        console.log(dutiesRes);
+        setDuties(dutiesRes);
+      } catch (error) {
+        console.log('Error fetching object', error);
+      }
+    };
+    fetchDuties();
+  }, [object, isModalShown]);
 
   const getSchedule = (startDate: string, endDate: string, startHour: string, endHour: string) => {
     const start = new Date(startDate);
@@ -134,21 +151,52 @@ const ObjectCard: React.FC<ObjectCardProps> = ({ object }) => {
             <div>
               <p className="text-xl font-bold mt-3">Harmonogram zmian</p>
               <div className="ml-3">
-                {schedule.map((item, index) => (
-                    <div className="flex pt-5">
-                        <p key={index} className="flex pr-5">
-                          {item.start} - {item.end}
-                        </p>
-                        <AddGuardButton changeModalState={() => (setIsModalShown(!isModalShown))} />
-                  </div>
-                ))}
+                {schedule.map((item, index) => {
+                  // Sprawdzamy, czy istnieje duty pasujące do zmiany
+                  const matchingDuty = dutiesData.find(
+                    (duty) =>
+                      duty.start_date.replace(/T/g, ' ').slice(0, 16) === item.start
+                  );
+
+                  return (
+                    <div key={index} className="flex pt-5">
+                      <p className="flex pr-5 pt-1">
+                        {item.start} - {item.end}
+                      </p>
+                      {matchingDuty ? (
+                        <EditGuardButton />
+                      ) : (
+                        <AddGuardButton
+                          changeModalState={() => setIsModalShown(!isModalShown)}
+                          setSelectedStartDate={() => {
+                            setSelectedStartDate(item.start);
+                          }}
+                          setSelectedEndDate={() => {
+                            setSelectedEndDate(item.end);
+                          }}
+                          startDate={item.start}
+                          endDate={item.end}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {isModalShown ? (<GuardChoiceModal changeModalState={() => setIsModalShown(prevState => !prevState)} city={object?.city} specialization={object?.body_guard_specialization} /> ) : null}
-      </div>
+      {isModalShown ? (
+        <GuardChoiceModal 
+          changeModalState={() => setIsModalShown(prevState => !prevState)}
+          city={object?.city}
+          specialization={object?.body_guard_specialization} 
+          objectId={object?.id}
+          startDate={selectedStartDate}
+          endDate={selectedEndDate}
+        />
+      ) : null}
+    </div>
   );
 };
 
