@@ -38,7 +38,7 @@ const ObjectsTable: React.FC<ObjectTableProps> = ({setSelectedObject}) => {
   };
 
   return (
-    <div className='relative bg-[#ffffff] rounded-[15px] h-[100%] w-[30%] overflow-hidden mr-8'>
+    <div className='relative bg-[#ffffff] rounded-[15px] h-[100%] w-[40%] overflow-hidden mx-8'>
       <div className='h-full overflow-y-auto'>
         {objectsData.map((object, index) => (
           <div
@@ -62,7 +62,7 @@ const ObjectsTable: React.FC<ObjectTableProps> = ({setSelectedObject}) => {
                 }`}>
                 {completeDuties}
               </p>
-              <p className='pt-1 colo'>/</p>
+              <p className='pt-1 col'>/</p>
               <p className='pt-2'>
                 {countWorkingDays(object.start_date, object.end_date)}
               </p>

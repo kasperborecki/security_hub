@@ -89,7 +89,7 @@ const ObjectCard: React.FC<ObjectCardProps> = ({ object }) => {
   const schedule = getSchedule(object?.start_date || '', object?.end_date || '', object?.start_hour || '', object?.end_hour || '');
 
   return (
-    <div className="relative bg-[#ffffff] rounded-[15px] h-[100%] w-[50%] pb-4">
+    <div className="relative bg-[#ffffff] rounded-[15px] h-[100%] w-[60%] pb-4">
       <div className="h-full overflow-y-auto">
         <div className="flex items-center justify-center text-3xl font-bold m-4">
           {object?.object_name}
